@@ -48,7 +48,7 @@
           "MOTD": "On Emisfera Cloud Hosting!"
         }
       },
-      "cloudlets": "$cloudlets",
+      "cloudlets": "${settings.cloudlets}",
       "nodeGroup": "cp",
       "displayName": "Minecraft"
     }
