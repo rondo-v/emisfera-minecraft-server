@@ -54,10 +54,10 @@
       "cmd [cp]": [
         "wget https://raw.githubusercontent.com/jelastic-jps/java-memory-agent/master/lib/jelastic-gc-agent.jar -O /data/jelastic-gc-agent.jar",
         "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/memoryConfig.sh -O /data/memoryConfig.sh",
-        "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/start-server.sh -O /start-server.sh",
-        "chmod +x /start-server.sh",
+        "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/start-server.sh -O /data/start-server.sh",
+        "chmod +x /data/start-server.sh",
         "chown -R minecraft:minecraft /data",
-        "bash /data/start-web.sh"
+        "bash /data/start-server.sh"
       ],
       "user": "minecraft"
     },
