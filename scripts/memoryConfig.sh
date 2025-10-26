@@ -42,38 +42,10 @@ if [[ $XMX_UNIT == "g" ]] || [[ $XMX_UNIT == "G" ]] ; then
 	let XMX_VALUE=$XMX_VALUE*1024; 
 fi
 
-JAVA_AGENT = "-javaagent:/data/jelastic-gc-agent.jar=period=300"
+JAVA_AGENT="-javaagent:/data/jelastic-gc-agent.jar=period=300"
 JVM_OPTS=$JVM_OPTS" $JAVA_AGENT";
 
 JAVA_VERSION=$(java -version 2>&1 | grep version |  awk -F '.' '{print $2}')
-
-if ! `echo $JVM_XX_OPTS | grep -q "\-XX:MaxPermSize"`
-then
-        [ -z "$MAXPERMSIZE" ] && { 
-        	# if java version <= 7 then configure MaxPermSize otherwise ignore 
-        	[ $JAVA_VERSION -le 7 ] && {
-			let MAXPERMSIZE_VALUE=$XMX_VALUE/10; 
-        		[ $MAXPERMSIZE_VALUE -ge 64 ] && {
-				[ $MAXPERMSIZE_VALUE -gt 256 ] && { MAXPERMSIZE_VALUE=256; }
-				MAXPERMSIZE="-XX:MaxPermSize=${MAXPERMSIZE_VALUE}M";
-                	}
-		}
-  	}
-        JVM_XX_OPTS=$JVM_XX_OPTS" $MAXPERMSIZE";
-fi
- 
-if ! `echo $JVM_XX_OPTS | grep -q "\-XX:+Use.*GC"`
-then	
-	[ -z "$GC" ] && {  
-        	[ $JAVA_VERSION -le 7 ] && {
-       			GC_LIMMIT=8000;
-	    		[ "$XMX_VALUE" -ge "$GC_LIMMIT" ] && GC="-XX:+UseG1GC" || GC="-XX:+UseParNewGC";
-	    	} || {
-	    		GC="-XX:+UseG1GC";
-	    	}
-     	}
-        JVM_XX_OPTS=$JVM_XX_OPTS" $GC"; 
-fi 
    
 if ! `echo $JVM_XX_OPTS | grep -q "UseCompressedOops"`
 then
