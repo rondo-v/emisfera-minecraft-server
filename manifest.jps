@@ -6,6 +6,26 @@
   "description": "Minecraft server allows players to play online or via a local area network with other people.",
   "logo": "https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/images/minecraft-logo-90px.png",
   "homepage": "https://github.com/rondo-v/emisfera-minecraft-server",
+  "settings": {
+    "fields": [
+      {
+        "type": "numberpicker",
+        "name": "cloudlets",
+        "caption": "Number of cloudlets",
+        "min": 16,
+        "max": 32,
+        "editable": true,
+        "hidden": false
+      }
+    ]
+  },
+  "script": [
+    "var maxmem = '${settings.cloudlets}'*128*8/10;",
+    "return {",
+    "   result : 0,",
+    "   test: maxmem",
+    "};"
+  ],
   "nodes": [
     {
       "docker": {
@@ -13,12 +33,12 @@
         "volumes": [
           "/data"
         ],
-        "entryPoint": "/start-server.sh",
         "env": {
           "UID": "1000",
           "GID": "1000",
           "DOCKER_EXPOSED_PORT": "25565",
-
+          "JVM_OPTS": "-Xms32M -Xmn30M -Xminf0.1 -Xmaxf0.3 -Xmx${result.maxmem}M",
+          "JVM_XX_OPTS": "-XX:+UseCompressedOops",
           "ENABLE_WHITELIST": "true",
           "WHITELIST": "Rondo_V",
           "EULA": "TRUE",
@@ -28,7 +48,7 @@
           "MOTD": "On Emisfera Cloud Hosting!"
         }
       },
-      "cloudlets": 16,
+      "cloudlets": "$cloudlets",
       "nodeGroup": "cp",
       "displayName": "Minecraft"
     }
@@ -58,11 +78,7 @@
     },
     "updateConfiguration": {
       "cmd [cp]": [
-        "wget https://raw.githubusercontent.com/jelastic-jps/java-memory-agent/master/lib/jelastic-gc-agent.jar -O /data/jelastic-gc-agent.jar",
-        "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/memoryConfig.sh -O /data/memoryConfig.sh",
-        "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/start-server.sh -O /start-server.sh",
-        "chmod +x /start-server.sh",
-        "chown -R minecraft:minecraft /data"
+        "wget https://raw.githubusercontent.com/jelastic-jps/java-memory-agent/master/lib/jelastic-gc-agent.jar -O /data/jelastic-gc-agent.jar"
       ],
       "user": "minecraft"
     },
