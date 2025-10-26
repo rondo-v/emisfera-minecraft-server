@@ -13,7 +13,6 @@
         "volumes": [
           "/data"
         ],
-        "entrypoint": "/image/scripts/start",
         "env": {
           "UID": "1000",
           "GID": "1000",
@@ -55,7 +54,8 @@
       "cmd [cp]": [
         "wget https://raw.githubusercontent.com/jelastic-jps/java-memory-agent/master/lib/jelastic-gc-agent.jar -O /data/jelastic-gc-agent.jar",
         "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/memoryConfig.sh -O /data/memoryConfig.sh",
-        "bash /data/memoryConfig.sh"
+        "bash /data/memoryConfig.sh",
+        "bash /image/scripts/start"
       ],
       "user": "minecraft"
     },
