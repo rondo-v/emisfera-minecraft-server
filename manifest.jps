@@ -62,8 +62,7 @@
         "mkdir -p /data/web/",
         "chown -R minecraft:minecraft /data",
         "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/web/index.html -O /data/web/index.html",
-        "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/start-web.sh -O /data/start-web.sh",
-        "bash /data/start-web.sh"
+        "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/start-web.sh -O /data/start-web.sh"
       ],
       "user": "minecraft"
     },
