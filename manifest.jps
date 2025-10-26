@@ -40,7 +40,12 @@
   },
   "onInstall": [
     "updateConfiguration",
-    "addEndpoint"
+    "addEndpoint",
+    {
+      "restartContainers": {
+        "nodeGroup": "cp"
+      }
+    }
   ],
   "actions": {
     "sendEmail": {
