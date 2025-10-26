@@ -35,13 +35,11 @@
   ],
   "license": {
     "terms": {
-      "en": "I agree with <a href='https://account.mojang.com/documents/minecraft_eula' target='_blank'><u>terms of service</u></a>"
+      "en": "I agree with Minecraft EULA"
     }
   },
-  "onBeforeSetEntryPoint": [
-    "updateConfiguration"
-  ],
   "onInstall": [
+    "updateConfiguration",
     "addEndpoint"
   ],
   "actions": {
