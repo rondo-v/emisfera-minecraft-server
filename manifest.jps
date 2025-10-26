@@ -15,10 +15,6 @@
         ],
         "entryPoint": "/start-server.sh",
         "env": {
-          "UID": "1000",
-          "GID": "1000",
-          "DOCKER_EXPOSED_PORT": "25565",
-
           "ENABLE_WHITELIST": "true",
           "WHITELIST": "Rondo_V",
           "EULA": "TRUE",
@@ -58,11 +54,16 @@
     },
     "updateConfiguration": {
       "cmd [cp]": [
+        "sed  -i \"/usermod\\|groupmod/d\" /start",
         "wget https://raw.githubusercontent.com/jelastic-jps/java-memory-agent/master/lib/jelastic-gc-agent.jar -O /data/jelastic-gc-agent.jar",
         "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/memoryConfig.sh -O /data/memoryConfig.sh",
         "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/start-server.sh -O /start-server.sh",
         "chmod +x /start-server.sh",
-        "chown -R minecraft:minecraft /data"
+        "mkdir -p /data/web/",
+        "chown -R minecraft:minecraft /data",
+        "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/web/index.html -O /data/web/index.html",
+        "wget https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/start-web.sh -O /data/start-web.sh",
+        "bash /data/start-web.sh"
       ],
       "user": "minecraft"
     },
