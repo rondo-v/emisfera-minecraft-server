@@ -42,7 +42,9 @@
         "env": {
           "UID": "1000",
           "GID": "1000",
-          "JVM_OPTS": "-Xms32M -Xmn30M -Xminf0.1 -Xmaxf0.3 -Xmx1638M -javaagent:/data/jelastic-gc-agent.jar=period=300",
+          "INIT_MEMORY:": "32M",
+          "MAX_MEMORY": "1638M",
+          "JVM_OPTS": "-Xmn30M -Xminf0.1 -Xmaxf0.3 -javaagent:/data/jelastic-gc-agent.jar=period=300",
           "JVM_XX_OPTS": "-XX:+UseCompressedOops",
           "ENABLE_WHITELIST": "true",
           "WHITELIST": "${settings.ops}",
