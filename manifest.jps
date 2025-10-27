@@ -50,7 +50,7 @@
         "env": {
           "UID": "1000",
           "GID": "1000",
-          "INIT_MEMORY:": "1G",
+          "INIT_MEMORY": "1G",
           "MAX_MEMORY": "1638M",
           "JVM_OPTS": "-Xmn30M -Xminf0.1 -Xmaxf0.3 -javaagent:/data/jelastic-gc-agent.jar=period=300",
           "JVM_XX_OPTS": "-XX:+UseCompressedOops",
@@ -83,7 +83,12 @@
     }
   ],
   "onAfterSetCloudletCount": [
-    "changeJvmMaxMemory"
+    "changeJvmMaxMemory",
+    {
+      "restartContainers": {
+        "nodeGroup": "cp"
+      }
+    }
   ],
   "actions": {
     "sendEmail": {
