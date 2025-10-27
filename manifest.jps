@@ -63,7 +63,7 @@
           "JVM_OPTS": "-Xmn30M -Xminf0.1 -Xmaxf0.3 -javaagent:/data/jelastic-gc-agent.jar=period=300",
           "JVM_XX_OPTS": "-XX:+UseCompressedOops",
           "ENABLE_WHITELIST": "true",
-          "WHITELIST": "${settings.whitelist}",
+          "WHITELIST": "${settings.ops}",
           "EULA": "TRUE",
           "DIFFICULTY": "${settings.difficulty}",
           "SPAWN_PROTECTION": "0",
