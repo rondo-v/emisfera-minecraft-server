@@ -35,7 +35,8 @@
         "hidden": false,
         "type": "string",
         "caption": "MOTD",
-        "name": "motd"
+        "name": "motd",
+        "default": "On Emisfera Cloud!"
       }
     ]
   },
@@ -108,9 +109,10 @@
       }
     },
     "changeJvmMaxMemory": {
-      "script": "return jelastic.env.control.AddContainerEnvVars(envName, session, nodeId, \"{\\\"MAX_MEMORY\\\":\\\"\"+ (Math.max(fixedCloudlets, flexibleCloudlets)*128*8/10) +\"M\\\"}\");",
+      "script": "return jelastic.env.control.AddContainerEnvVars(envName, session, groupId, nodeId, \"{\\\"MAX_MEMORY\\\":\\\"\"+ (Math.max(fixedCloudlets, flexibleCloudlets)*128*8/10) +\"M\\\"}\");",
       "params": {
         "nodeId": "${nodes.cp.first.id}",
+        "groupId": "cp",
         "fixedCloudlets": "${event.params.fixedCloudlets}",
         "flexibleCloudlets": "${event.params.flexibleCloudlets}",
         "envName":"${env.envName}"
