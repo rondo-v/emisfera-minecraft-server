@@ -29,6 +29,13 @@
         "hideLabel": false,
         "hidden": false,
         "editable": true
+      },
+      {
+        "hideLabel": false,
+        "hidden": false,
+        "type": "string",
+        "caption": "MOTD",
+        "name": "motd"
       }
     ]
   },
@@ -42,7 +49,7 @@
         "env": {
           "UID": "1000",
           "GID": "1000",
-          "INIT_MEMORY:": "32M",
+          "INIT_MEMORY:": "1G",
           "MAX_MEMORY": "1638M",
           "JVM_OPTS": "-Xmn30M -Xminf0.1 -Xmaxf0.3 -javaagent:/data/jelastic-gc-agent.jar=period=300",
           "JVM_XX_OPTS": "-XX:+UseCompressedOops",
@@ -52,7 +59,7 @@
           "DIFFICULTY": "${settings.difficulty}",
           "SPAWN_PROTECTION": "0",
           "OPS": "${settings.ops}",
-          "MOTD": "On Emisfera Cloud Hosting!"
+          "MOTD": "${settings.motd}"
         }
       },
       "cloudlets": 16,
@@ -73,6 +80,9 @@
         "nodeGroup": "cp"
       }
     }
+  ],
+  "onAfterSetCloudletCount": [
+    "changeJvmMaxMemory"
   ],
   "actions": {
     "sendEmail": {
@@ -95,6 +105,14 @@
       "params": {
         "nodeId": "${nodes.cp.first.id}",
         "port": 25565
+      }
+    },
+    "changeJvmMaxMemory": {
+      "script": "https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/changeJvmMaxMemory.js",
+      "params": {
+        "nodeId": "${nodes.cp.first.id}",
+        "fixedCloudlets": "${event.params.fixedCloudlets}",
+        "flexibleCloudlets": "${event.params.flexibleCloudlets}"
       }
     }
   }
