@@ -108,11 +108,12 @@
       }
     },
     "changeJvmMaxMemory": {
-      "script": "https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/changeJvmMaxMemory.js",
+      "script": "return jelastic.env.control.AddContainerEnvVars(envName, session, nodeId, \"{\"MAX_MEMORY\":\"+ (Math.max(fixedCloudlets, flexibleCloudlets)*128*8/10) +\"M\"}\");",
       "params": {
         "nodeId": "${nodes.cp.first.id}",
         "fixedCloudlets": "${event.params.fixedCloudlets}",
-        "flexibleCloudlets": "${event.params.flexibleCloudlets}"
+        "flexibleCloudlets": "${event.params.flexibleCloudlets}",
+        "envName":"${env.envName}"
       }
     }
   }
