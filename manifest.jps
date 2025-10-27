@@ -16,14 +16,6 @@
         "name": "ops"
       },
       {
-        "hideLabel": false,
-        "hidden": false,
-        "type": "text",
-        "caption": "Whitelist",
-        "name": "whitelist",
-        "cls": "x-form-field-wrap"
-      },
-      {
         "type": "list",
         "caption": "Difficulty",
         "name": "difficulty",
