@@ -108,7 +108,7 @@
       }
     },
     "changeJvmMaxMemory": {
-      "script": "return jelastic.env.control.AddContainerEnvVars(envName, session, nodeId, \"{\"MAX_MEMORY\":\"+ (Math.max(fixedCloudlets, flexibleCloudlets)*128*8/10) +\"M\"}\");",
+      "script": "return jelastic.env.control.AddContainerEnvVars(envName, session, nodeId, \"{\\\"MAX_MEMORY\\\":\\\"\"+ (Math.max(fixedCloudlets, flexibleCloudlets)*128*8/10) +\"M\\\"}\");",
       "params": {
         "nodeId": "${nodes.cp.first.id}",
         "fixedCloudlets": "${event.params.fixedCloudlets}",
