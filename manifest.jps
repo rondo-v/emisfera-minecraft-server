@@ -20,7 +20,8 @@
         "hidden": false,
         "type": "text",
         "caption": "Whitelist",
-        "name": "whitelist"
+        "name": "whitelist",
+        "cls": "x-form-field-wrap"
       },
       {
         "type": "list",
