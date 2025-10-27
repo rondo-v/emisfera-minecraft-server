@@ -1,135 +1,116 @@
-{
-  "version": "8.14.2",
-  "type": "install",
-  "id": "minecraft-server",
-  "name": "Minecraft Server",
-  "description": "Minecraft server allows players to play online or via a local area network with other people.",
-  "logo": "https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/images/minecraft-logo-90px.png",
-  "homepage": "https://github.com/rondo-v/emisfera-minecraft-server",
-  "settings": {
-    "fields": [
-      {
-        "hideLabel": false,
-        "hidden": false,
-        "type": "string",
-        "caption": "Server Admin",
-        "name": "ops"
-      },
-      {
-        "hideLabel": false,
-        "hidden": false,
-        "type": "text",
-        "caption": "Whitelist",
-        "name": "whitelist",
-        "cls": "x-form-field-wrap"
-      },
-      {
-        "type": "list",
-        "caption": "Difficulty",
-        "name": "difficulty",
-        "values": {
-          "0": "Peaceful",
-          "1": "Easy",
-          "2": "Normal",
-          "3": "Hard"
-        },
-        "default": "2",
-        "hideLabel": false,
-        "hidden": false,
-        "editable": true
-      },
-      {
-        "hideLabel": false,
-        "hidden": false,
-        "type": "string",
-        "caption": "MOTD",
-        "name": "motd",
-        "default": "On Emisfera Cloud!"
-      }
-    ]
-  },
-  "nodes": [
-    {
-      "docker": {
-        "image": "itzg/minecraft-server:latest",
-        "volumes": [
-          "/data"
-        ],
-        "env": {
-          "UID": "1000",
-          "GID": "1000",
-          "INIT_MEMORY": "1G",
-          "MAX_MEMORY": "1638M",
-          "JVM_OPTS": "-Xmn30M -Xminf0.1 -Xmaxf0.3 -javaagent:/data/jelastic-gc-agent.jar=period=300",
-          "JVM_XX_OPTS": "-XX:+UseCompressedOops",
-          "ENABLE_WHITELIST": "true",
-          "WHITELIST": "${settings.ops}",
-          "EULA": "TRUE",
-          "DIFFICULTY": "${settings.difficulty}",
-          "SPAWN_PROTECTION": "0",
-          "OPS": "${settings.ops}",
-          "MOTD": "${settings.motd}"
-        }
-      },
-      "cloudlets": 16,
-      "nodeGroup": "cp",
-      "displayName": "Minecraft"
-    }
-  ],
-  "license": {
-    "terms": {
-      "en": "I agree with Minecraft EULA"
-    }
-  },
-  "onInstall": [
-    "updateConfiguration",
-    "addEndpoint",
-    {
-      "restartContainers": {
-        "nodeGroup": "cp"
-      }
-    }
-  ],
-  "onAfterSetCloudletCount": [
-    "changeJvmMaxMemory",
-    {
-      "restartContainers": {
-        "nodeGroup": "cp"
-      }
-    }
-  ],
-  "actions": {
-    "sendEmail": {
-      "install": {
-        "jps": "https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/addons/sendEmail.jps",
-        "settings": {
-          "url": "${this.url}"
-        }
-      }
-    },
-    "updateConfiguration": {
-      "cmd [cp]": [
-        "wget https://raw.githubusercontent.com/jelastic-jps/java-memory-agent/master/lib/jelastic-gc-agent.jar -O /data/jelastic-gc-agent.jar",
-        "chown -R minecraft:minecraft /data"
-      ],
-      "user": "minecraft"
-    },
-    "addEndpoint": {
-      "script": "https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/addEndpoint.js",
-      "params": {
-        "nodeId": "${nodes.cp.first.id}",
-        "port": 25565
-      }
-    },
-    "changeJvmMaxMemory": {
-      "script": "return jelastic.env.control.AddContainerEnvVars(envName, session, groupId, nodeId, \"{\\\"MAX_MEMORY\\\":\\\"\"+ Math.floor(Math.max(fixedCloudlets, flexibleCloudlets)*128*8/10) +\"M\\\"}\");",
-      "params": {
-        "nodeId": "${nodes.cp.first.id}",
-        "groupId": "cp",
-        "fixedCloudlets": "${event.params.fixedCloudlets}",
-        "flexibleCloudlets": "${event.params.flexibleCloudlets}",
-        "envName":"${env.envName}"
-      }
-    }
-  }
-}
+version: 8.14.2
+type: install
+id: minecraft-server
+name: Minecraft Server
+description: >
+  Minecraft server allows players to play online or via a local area network with other people.
+logo: https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/images/minecraft-logo-90px.png
+homepage: https://github.com/rondo-v/emisfera-minecraft-server
+
+settings:
+  fields:
+    - hideLabel: false
+      hidden: false
+      type: string
+      caption: Server Admin
+      name: ops
+
+    - hideLabel: false
+      hidden: false
+      type: text
+      caption: Whitelist
+      name: whitelist
+
+    - type: list
+      caption: Difficulty
+      name: difficulty
+      values:
+        "0": Peaceful
+        "1": Easy
+        "2": Normal
+        "3": Hard
+      default: "2"
+      hideLabel: false
+      hidden: false
+      editable: true
+
+    - hideLabel: false
+      hidden: false
+      type: string
+      caption: MOTD
+      name: motd
+      default: On Emisfera Cloud!
+
+nodes:
+  - docker:
+      image: itzg/minecraft-server:latest
+      volumes:
+        - /data
+      env:
+        UID: "1000"
+        GID: "1000"
+        INIT_MEMORY: 1G
+        MAX_MEMORY: 1638M
+        JVM_OPTS: "-Xmn30M -Xminf0.1 -Xmaxf0.3 -javaagent:/data/jelastic-gc-agent.jar=period=300"
+        JVM_XX_OPTS: "-XX:+UseCompressedOops"
+        ENABLE_WHITELIST: "true"
+        WHITELIST: |-
+          ${settings.whitelist}
+        EULA: TRUE
+        DIFFICULTY: ${settings.difficulty}
+        SPAWN_PROTECTION: "0"
+        OPS: ${settings.ops}
+        MOTD: ${settings.motd}
+    cloudlets: 16
+    nodeGroup: cp
+    displayName: Minecraft
+
+license:
+  terms:
+    en: I agree with Minecraft EULA
+
+onInstall:
+  - updateConfiguration
+  - addEndpoint
+  - restartContainers:
+      nodeGroup: cp
+
+onAfterSetCloudletCount:
+  - changeJvmMaxMemory
+  - restartContainers:
+      nodeGroup: cp
+
+actions:
+  sendEmail:
+    install:
+      jps: https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/addons/sendEmail.jps
+      settings:
+        url: ${this.url}
+
+  updateConfiguration:
+    cmd [cp]:
+      - wget https://raw.githubusercontent.com/jelastic-jps/java-memory-agent/master/lib/jelastic-gc-agent.jar -O /data/jelastic-gc-agent.jar
+      - chown -R minecraft:minecraft /data
+    user: minecraft
+
+  addEndpoint:
+    script: https://raw.githubusercontent.com/rondo-v/emisfera-minecraft-server/master/scripts/addEndpoint.js
+    params:
+      nodeId: ${nodes.cp.first.id}
+      port: 25565
+
+  changeJvmMaxMemory:
+    script: >
+      return jelastic.env.control.AddContainerEnvVars(
+        envName,
+        session,
+        groupId,
+        nodeId,
+        "{\"MAX_MEMORY\":\"" + Math.floor(Math.max(fixedCloudlets, flexibleCloudlets)*128*8/10) + "M\"}"
+      );
+    params:
+      nodeId: ${nodes.cp.first.id}
+      groupId: cp
+      fixedCloudlets: ${event.params.fixedCloudlets}
+      flexibleCloudlets: ${event.params.flexibleCloudlets}
+      envName: ${env.envName}
